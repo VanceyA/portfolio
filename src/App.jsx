@@ -1,9 +1,78 @@
-import React, { useState } from 'react';
-import { Mail, Github, Linkedin, ExternalLink } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Mail, Github, Linkedin } from 'lucide-react';
 
 function App() {
-  const [activeSection, setActiveSection] = useState('');
-
+  const [activeSection, setActiveSection] = useState('about');
+  
+  // Update active section based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = document.querySelectorAll('section');
+      let currentSection = 'about';
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (window.scrollY >= sectionTop - 200 && window.scrollY < sectionTop + sectionHeight - 200) {
+          currentSection = section.getAttribute('id');
+        }
+      });
+      
+      setActiveSection(currentSection);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial position
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  
+  const navigateToSection = (sectionId) => {
+    setActiveSection(sectionId);
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+  };
+  
+  const newspaperSections = [
+    {
+      id: "about",
+      title: "BRIDGING TECHNOLOGY & COMMUNICATION",
+      date: "JULY 14, 2025",
+      headline: "Software Engineer Specializes in Making Complex Tech Accessible",
+      content: "Vance Andersen combines technical expertise with exceptional communication skills to bridge the gap between developers and non-technical stakeholders.",
+      image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+      imagePosition: "right"
+    },
+    {
+      id: "experience",
+      title: "PROFESSIONAL EXPERIENCE",
+      date: "JULY 14, 2025",
+      headline: "A Track Record of Bridging Technical Gaps",
+      content: "With experience in both technical implementation and user-focused design, Andersen creates solutions that are both technically sound and user-friendly.",
+      image: "https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+      imagePosition: "left",
+      showExperience: true
+    },
+    {
+      id: "skills",
+      title: "TECHNICAL & COMMUNICATION SKILLS",
+      date: "JULY 14, 2025",
+      headline: "The Perfect Blend of Technical and Soft Skills",
+      content: "Specializing in translating technical concepts into accessible language, Andersen helps teams collaborate more effectively and deliver better products.",
+      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+      imagePosition: "right",
+      showSkills: true
+    },
+    {
+      id: "contact",
+      title: "GET IN TOUCH",
+      date: "JULY 14, 2025",
+      headline: "Ready to Collaborate on Your Next Project?",
+      content: "By focusing on both technical excellence and user experience, Andersen develops solutions that meet business needs while remaining accessible to all users.",
+      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+      imagePosition: "left",
+      showContact: true
+    }
+  ];
+  
   const experiences = [
     {
       year: '2024-25',
@@ -28,286 +97,162 @@ function App() {
       title: 'Field Support IT',
       subtitle: 'Understanding Real User Pain Points',
       description: 'Diagnosed and solved technical issues while maintaining clear communication with end users, translating complex technical problems into understandable solutions.'
-    },
-    
+    }
   ];
 
   const skills = [
     { category: 'Technical', items: ['Software Engineering', 'Application Development', 'System Architecture', 'Problem Solving'] },
-    { category: 'Communication', items: ['Technical Documentation', 'Cross-functional Collaboration', 'User Experience Design', 'Teaching & Training'] },
-    { category: 'Bridge Skills', items: ['Requirements Translation', 'Technical Communication', 'User-Centered Design', 'Process Improvement'] }
+    { category: 'Languages', items: ['JavaScript', 'Python', 'HTML/CSS', 'SQL', 'Java'] },
+    { category: 'Frameworks', items: ['React', 'Node.js', 'Express', 'Next.js', 'Django'] },
+    { category: 'Communication', items: ['Technical Writing', 'Documentation', 'User Training', 'Client Presentations'] }
   ];
 
   return (
-    <div className="min-h-screen bg-stone-50 text-stone-900" style={{
-      backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d6d3d1' fill-opacity='0.3'%3E%3Cpath d='M30 30c0-6.627-5.373-12-12-12s-12 5.373-12 12 5.373 12 12 12 12-5.373 12-12zm12 0c0-6.627-5.373-12-12-12s-12 5.373-12 12 5.373 12 12 12 12-5.373 12-12z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-      fontFamily: 'Georgia, "Times New Roman", serif'
-    }}>
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 bg-stone-50/90 backdrop-blur-sm z-50 border-b border-stone-300" style={{
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-      }}>
-        <div className="max-w-6xl mx-auto px-6 py-4">
+    <div className="min-h-screen bg-stone-100 font-serif">
+      {/* Fixed Navigation Bar / Masthead */}
+      <header className="fixed top-0 left-0 right-0 bg-stone-100 border-b-2 border-stone-800 z-50">
+        <div className="container mx-auto px-4 py-3">
           <div className="flex justify-between items-center">
-            <div className="text-2xl font-bold tracking-tight" style={{fontFamily: 'Georgia, serif'}}>
-              VANCE ANDERSEN
+            <div className="flex items-baseline">
+              <h1 className="text-2xl font-bold mr-4">THE PORTFOLIO TIMES</h1>
+              <p className="text-sm italic">Vol. 1 Issue 4</p>
             </div>
-            <div className="flex space-x-8">
-              <a href="#about" className="text-stone-700 hover:text-stone-900 transition-colors font-medium tracking-wide">About</a>
-              <a href="#experience" className="text-stone-700 hover:text-stone-900 transition-colors font-medium tracking-wide">Experience</a>
-              <a href="#skills" className="text-stone-700 hover:text-stone-900 transition-colors font-medium tracking-wide">Skills</a>
-              <a href="#contact" className="text-stone-700 hover:text-stone-900 transition-colors font-medium tracking-wide">Contact</a>
-            </div>
+            <nav>
+              <ul className="flex space-x-6">
+                {newspaperSections.map(section => (
+                  <li key={section.id}>
+                    <button 
+                      onClick={() => navigateToSection(section.id)}
+                      className={`py-1 px-2 ${activeSection === section.id ? 'bg-stone-800 text-stone-100' : 'text-stone-800 hover:bg-stone-200'}`}
+                    >
+                      {section.id.charAt(0).toUpperCase() + section.id.slice(1)}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
         </div>
-      </nav>
+      </header>
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-lg shadow-lg p-12 border border-stone-200" style={{
-            boxShadow: '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.8)'
-          }}>
-            <div className="text-center border-b-2 border-stone-900 pb-6 mb-8">
-              <div className="text-xs uppercase tracking-widest text-stone-500 mb-2">
-                SOFTWARE ENGINEER & TECHNICAL COMMUNICATOR
+      {/* Main Content */}
+      <main className="container mx-auto px-4 pt-24 pb-12">
+        {/* Newspaper Sections */}
+        {newspaperSections.map((section, index) => (
+          <section 
+            key={section.id} 
+            id={section.id} 
+            className={`min-h-screen py-16 ${index % 2 === 0 ? 'bg-stone-100' : 'bg-stone-200'}`}
+          >
+            <div className="max-w-6xl mx-auto">
+              {/* Section Header */}
+              <div className="mb-8 border-b-2 border-stone-800 pb-2">
+                <p className="text-sm uppercase tracking-wider">{section.date}</p>
+                <h2 className="text-4xl font-bold mb-2">{section.title}</h2>
+                <h3 className="text-2xl italic">{section.headline}</h3>
               </div>
-              <h1 className="text-6xl font-bold leading-tight tracking-tight" style={{fontFamily: 'Georgia, serif'}}>
-                BRIDGING THE GAP
-              </h1>
-              <h2 className="text-4xl font-light mt-2 text-stone-700" style={{fontFamily: 'Georgia, serif'}}>
-                Between People and Technology
-              </h2>
-            </div>
-            <div className="max-w-3xl mx-auto">
-              <p className="text-xl leading-relaxed text-stone-700 text-center mb-8" style={{
-                fontFamily: 'Georgia, serif',
-                lineHeight: '1.8'
-              }}>
-                Translating complex technical concepts into accessible solutions that drive real business impact and user satisfaction.
-              </p>
-              <div className="flex justify-center space-x-6 pt-4">
-                <button className="bg-stone-900 text-white px-8 py-4 font-medium tracking-wide hover:bg-stone-800 transition-colors border-2 border-stone-900">
-                  LET'S COLLABORATE
-                </button>
-                <button className="border-2 border-stone-900 text-stone-900 px-8 py-4 font-medium tracking-wide hover:bg-stone-50 transition-colors">
-                  VIEW PORTFOLIO
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* About Section */}
-      <section id="about" className="py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-lg shadow-lg border border-stone-200 overflow-hidden">
-            <div className="bg-stone-900 text-white px-8 py-4">
-              <h2 className="text-3xl font-bold tracking-wide" style={{fontFamily: 'Georgia, serif'}}>
-                ABOUT THE ENGINEER
-              </h2>
-            </div>
-            <div className="p-8">
-              <div className="grid md:grid-cols-2 gap-12">
-                <div>
-                  <div className="border-l-4 border-stone-900 pl-6 mb-8">
-                    <h3 className="text-xl font-bold mb-4 tracking-wide" style={{fontFamily: 'Georgia, serif'}}>
-                      THE MISSION
-                    </h3>
-                    <p className="text-stone-700 leading-relaxed mb-4" style={{fontFamily: 'Georgia, serif', lineHeight: '1.8'}}>
-                      I specialize in making technology accessible and actionable for diverse audiences. With a Bachelor's degree in Software Engineering (Application Development Track), I bring both technical depth and exceptional communication skills to every project.
-                    </p>
-                    <p className="text-stone-700 leading-relaxed" style={{fontFamily: 'Georgia, serif', lineHeight: '1.8'}}>
-                      My unique value lies in translating complex technical concepts into clear, understandable solutions that drive real business impact and user satisfaction.
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <div className="border border-stone-300 bg-stone-50 p-6 mb-6">
-                    <h3 className="text-lg font-bold mb-3 tracking-wide" style={{fontFamily: 'Georgia, serif'}}>
-                      CREDENTIALS
-                    </h3>
-                    <p className="text-stone-700 font-medium">
-                      Bachelor's Degree in Software Engineering<br />
-                      Application Development Track
-                    </p>
-                  </div>
-                  <div className="border border-stone-300 bg-stone-50 p-6">
-                    <h3 className="text-lg font-bold mb-3 tracking-wide" style={{fontFamily: 'Georgia, serif'}}>
-                      SPECIALIZATION
-                    </h3>
-                    <p className="text-stone-700 font-medium">
-                      Technical excellence with human-centered approach, bridging complex systems and user needs.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Experience Section */}
-      <section id="experience" className="py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-lg shadow-lg border border-stone-200 overflow-hidden">
-            <div className="bg-stone-900 text-white px-8 py-4">
-              <h2 className="text-3xl font-bold tracking-wide" style={{fontFamily: 'Georgia, serif'}}>
-                PROFESSIONAL EXPERIENCE
-              </h2>
-            </div>
-            <div className="p-8">
-              <div className="space-y-8">
-                {experiences.map((exp, index) => (
-                  <div key={index} className="group border-b border-stone-200 pb-8 last:border-b-0">
-                    <div className="grid md:grid-cols-12 gap-6">
-                      <div className="md:col-span-2">
-                        <div className="bg-stone-900 text-white px-3 py-1 text-sm font-bold tracking-wider inline-block">
-                          {exp.year}
+              {/* Section Content */}
+              <div className={`flex flex-col ${section.imagePosition === 'right' ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8`}>
+                {/* Text Content */}
+                <div className={`flex-1 ${section.imagePosition === 'right' ? 'pr-4' : 'pl-4'}`}>
+                  <div className="relative">
+                    {/* Newspaper fold effect */}
+                    <div className="absolute left-1/2 top-0 bottom-0 w-px bg-stone-300"></div>
+                    <div className="absolute left-1/2 top-0 bottom-0 w-8 bg-gradient-to-r from-transparent via-stone-300/20 to-transparent"></div>
+                    
+                    {/* Multi-column text */}
+                    <div className="columns-1 md:columns-2 gap-8 text-stone-800">
+                      <p className="mb-4 first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2">
+                        {section.content}
+                      </p>
+                      
+                      {/* Experience Section */}
+                      {section.showExperience && (
+                        <div className="break-inside-avoid">
+                          <h4 className="text-xl font-bold mt-6 mb-4 border-b border-stone-400">Career Highlights</h4>
+                          {experiences.map((exp, i) => (
+                            <div key={i} className="mb-6">
+                              <div className="flex justify-between items-baseline mb-1">
+                                <h5 className="font-bold">{exp.title}</h5>
+                                <span className="text-sm italic">{exp.year}</span>
+                              </div>
+                              <h6 className="text-sm font-semibold mb-1">{exp.subtitle}</h6>
+                              <p className="text-sm">{exp.description}</p>
+                            </div>
+                          ))}
                         </div>
-                      </div>
-                      <div className="md:col-span-10">
-                        <h3 className="text-2xl font-bold mb-2 group-hover:text-stone-600 transition-colors tracking-wide" style={{fontFamily: 'Georgia, serif'}}>
-                          {exp.title}
-                        </h3>
-                        <h4 className="text-lg font-semibold text-stone-600 mb-4 italic" style={{fontFamily: 'Georgia, serif'}}>
-                          {exp.subtitle}
-                        </h4>
-                        <p className="text-stone-700 leading-relaxed" style={{fontFamily: 'Georgia, serif', lineHeight: '1.8'}}>
-                          {exp.description}
-                        </p>
-                      </div>
+                      )}
+                      
+                      {/* Skills Section */}
+                      {section.showSkills && (
+                        <div className="break-inside-avoid">
+                          <h4 className="text-xl font-bold mt-6 mb-4 border-b border-stone-400">Expertise</h4>
+                          {skills.map((skillGroup, i) => (
+                            <div key={i} className="mb-6">
+                              <h5 className="font-bold mb-2">{skillGroup.category}</h5>
+                              <div className="flex flex-wrap gap-2">
+                                {skillGroup.items.map((skill, j) => (
+                                  <span key={j} className="bg-stone-300 px-2 py-1 text-xs rounded">
+                                    {skill}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      {/* Contact Section */}
+                      {section.showContact && (
+                        <div className="break-inside-avoid">
+                          <h4 className="text-xl font-bold mt-6 mb-4 border-b border-stone-400">Contact Information</h4>
+                          <div className="space-y-3">
+                            <a href="mailto:contact@example.com" className="flex items-center gap-2 hover:text-stone-600">
+                              <Mail size={16} />
+                              <span>contact@example.com</span>
+                            </a>
+                            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-stone-600">
+                              <Github size={16} />
+                              <span>github.com/vanceandersen</span>
+                            </a>
+                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-stone-600">
+                              <Linkedin size={16} />
+                              <span>linkedin.com/in/vanceandersen</span>
+                            </a>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Skills Section */}
-      <section id="skills" className="py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-lg shadow-lg border border-stone-200 overflow-hidden">
-            <div className="bg-stone-900 text-white px-8 py-4">
-              <h2 className="text-3xl font-bold tracking-wide" style={{fontFamily: 'Georgia, serif'}}>
-                SKILL PORTFOLIO
-              </h2>
-            </div>
-            <div className="p-8">
-              <div className="grid md:grid-cols-3 gap-8">
-                {skills.map((skillGroup, index) => (
-                  <div key={index} className="border border-stone-300 bg-stone-50 p-6">
-                    <h3 className="text-xl font-bold mb-6 tracking-wide border-b border-stone-400 pb-2" style={{fontFamily: 'Georgia, serif'}}>
-                      {skillGroup.category.toUpperCase()}
-                    </h3>
-                    <ul className="space-y-3">
-                      {skillGroup.items.map((skill, skillIndex) => (
-                        <li key={skillIndex} className="text-stone-700 font-medium flex items-center" style={{fontFamily: 'Georgia, serif'}}>
-                          <span className="w-2 h-2 bg-stone-900 mr-3 flex-shrink-0"></span>
-                          {skill}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Interactive Demo Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-lg shadow-lg border border-stone-200 overflow-hidden">
-            <div className="bg-stone-900 text-white px-8 py-4">
-              <h2 className="text-3xl font-bold tracking-wide" style={{fontFamily: 'Georgia, serif'}}>
-                TRANSLATION IN ACTION
-              </h2>
-            </div>
-            <div className="p-8">
-              <h3 className="text-2xl font-bold mb-8 text-center tracking-wide" style={{fontFamily: 'Georgia, serif'}}>
-                Making Technical Concepts Accessible
-              </h3>
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="border-2 border-stone-400 bg-stone-100">
-                  <div className="bg-stone-400 text-white px-4 py-2">
-                    <h4 className="font-bold tracking-wider" style={{fontFamily: 'Georgia, serif'}}>
-                      TECHNICAL VERSION
-                    </h4>
-                  </div>
-                  <div className="p-6">
-                    <p className="font-mono text-sm leading-relaxed text-stone-800 bg-white p-4 border border-stone-300">
-                      "We need to implement a RESTful API with JWT authentication middleware to handle user sessions and protect our endpoints from unauthorized access."
-                    </p>
-                  </div>
                 </div>
-                <div className="border-2 border-stone-900 bg-stone-50">
-                  <div className="bg-stone-900 text-white px-4 py-2">
-                    <h4 className="font-bold tracking-wider" style={{fontFamily: 'Georgia, serif'}}>
-                      ACCESSIBLE VERSION
-                    </h4>
-                  </div>
-                  <div className="p-6">
-                    <p className="leading-relaxed text-stone-800 bg-white p-4 border border-stone-300" style={{fontFamily: 'Georgia, serif', lineHeight: '1.8'}}>
-                      "We're building a secure system that verifies who users are before they can access their personal information, like a digital ID card check."
-                    </p>
-                  </div>
+                
+                {/* Image */}
+                <div className="flex-1">
+                  <img 
+                    src={section.image} 
+                    alt={section.title}
+                    className="w-full h-auto object-cover grayscale mix-blend-multiply border border-stone-400 shadow-md"
+                  />
+                  <p className="text-xs mt-2 italic text-stone-600">Photo: The Portfolio Times / Staff</p>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-lg shadow-lg border border-stone-200 overflow-hidden">
-            <div className="bg-stone-900 text-white px-8 py-4">
-              <h2 className="text-3xl font-bold tracking-wide" style={{fontFamily: 'Georgia, serif'}}>
-                LET'S COLLABORATE
-              </h2>
-            </div>
-            <div className="p-12 text-center">
-              <h3 className="text-2xl font-bold mb-6 tracking-wide" style={{fontFamily: 'Georgia, serif'}}>
-                Ready to Bridge Your Technical Gaps?
-              </h3>
-              <p className="text-stone-700 mb-8 max-w-2xl mx-auto leading-relaxed" style={{fontFamily: 'Georgia, serif', lineHeight: '1.8'}}>
-                Let's build technology that people actually understand and use. Ready to improve your team's technical communication and user experience?
-              </p>
-              <div className="flex justify-center space-x-8">
-                <a href="mailto:your.email@example.com" className="flex items-center space-x-3 bg-stone-900 text-white px-6 py-3 font-medium tracking-wider hover:bg-stone-800 transition-colors">
-                  <Mail size={20} />
-                  <span>EMAIL</span>
-                </a>
-                <a href="https://github.com/yourusername" className="flex items-center space-x-3 border-2 border-stone-900 text-stone-900 px-6 py-3 font-medium tracking-wider hover:bg-stone-50 transition-colors">
-                  <Github size={20} />
-                  <span>GITHUB</span>
-                </a>
-                <a href="https://linkedin.com/in/yourprofile" className="flex items-center space-x-3 border-2 border-stone-900 text-stone-900 px-6 py-3 font-medium tracking-wider hover:bg-stone-50 transition-colors">
-                  <Linkedin size={20} />
-                  <span>LINKEDIN</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        ))}
+      </main>
 
       {/* Footer */}
-      <footer className="py-12 px-6 border-t-2 border-stone-900">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-stone-700 font-medium tracking-wide" style={{fontFamily: 'Georgia, serif'}}>
-            © 2024 Vance Andersen. Building bridges between people and technology.
-          </p>
+      <footer className="bg-stone-800 text-stone-100 py-6">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-lg font-bold">THE PORTFOLIO TIMES</p>
+            <p className="text-sm">&copy; {new Date().getFullYear()} Vance Andersen. All rights reserved.</p>
+          </div>
         </div>
       </footer>
     </div>
   );
-};
+}
 
 export default App;
