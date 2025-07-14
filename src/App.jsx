@@ -137,6 +137,88 @@ function App() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 pt-24 pb-12">
+        {/* Hero Banner */}
+        <div className="py-12 mb-12 border-y-4 border-double border-stone-800 relative overflow-hidden">
+          {/* Breaking news banner */}
+          <div className="bg-stone-800 text-stone-100 py-2 mb-8 shadow-lg">
+            <div className="container mx-auto px-4">
+              <p className="text-sm font-bold tracking-wider text-center">BREAKING NEWS - {new Date().toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}</p>
+            </div>
+          </div>
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+              {/* Profile Photo Column */}
+              <div className="md:w-1/3">
+                <div className="relative">
+                  {/* Decorative newspaper corner fold */}
+                  
+                  {/* Profile Image with newspaper styling */}
+                  <div className="border-4 border-stone-800 p-2 bg-stone-100 shadow-xl relative z-0">
+                    <img 
+                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" 
+                      alt="Vance Andersen" 
+                      className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-500 mix-blend-multiply"
+                    />
+                    <div className="absolute bottom-4 left-0 right-0 bg-stone-800 bg-opacity-80 text-stone-100 p-2 text-center">
+                      <p className="font-bold">Vance Andersen</p>
+                      <p className="text-xs">Software Engineer & Communicator</p>
+                    </div>
+                  </div>
+                  
+                  {/* Caption */}
+                  <p className="text-xs italic mt-2 text-center">Photo: The Portfolio Times / Staff</p>
+                </div>
+              </div>
+              
+              {/* Headline Column */}
+              <div className="md:w-2/3 text-center md:text-left">
+                <h2 className="text-6xl md:text-7xl font-bold mb-2 tracking-tight font-serif">VANCE ANDERSEN</h2>
+                <h3 className="text-2xl md:text-3xl font-bold mb-4 tracking-tight">TECH INNOVATOR BRIDGES COMMUNICATION GAP</h3>
+                
+                {/* Quick stats/highlights in newspaper style */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 my-6 text-center">
+                  <div className="border border-stone-400 p-3 bg-stone-50">
+                    <p className="font-bold text-2xl">4+</p>
+                    <p className="text-sm">Years Experience</p>
+                  </div>
+                  <div className="border border-stone-400 p-3 bg-stone-50">
+                    <p className="font-bold text-2xl">15+</p>
+                    <p className="text-sm">Projects Completed</p>
+                  </div>
+                  <div className="border border-stone-400 p-3 bg-stone-50 col-span-2 md:col-span-1">
+                    <p className="font-bold text-2xl">2</p>
+                    <p className="text-sm">Industry Awards</p>
+                  </div>
+                </div>
+                
+                <p className="text-xl italic mb-6">"One of the most innovative approaches to personal branding I've seen" — Industry Expert</p>
+                
+                <div className="flex flex-wrap justify-center md:justify-start gap-4">
+                  <button 
+                    onClick={() => navigateToSection('about')} 
+                    className="bg-stone-800 text-stone-100 px-8 py-3 hover:bg-stone-700 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg"
+                  >
+                    Read My Story
+                  </button>
+                  <button 
+                    onClick={() => navigateToSection('contact')} 
+                    className="border-2 border-stone-800 px-8 py-3 hover:bg-stone-200 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg"
+                  >
+                    Contact Now
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            {/* Scroll indicator */}
+            <div className="mt-16 text-center animate-bounce">
+              <div className="w-8 h-8 mx-auto border-b-2 border-r-2 border-stone-800 transform rotate-45"></div>
+              <p className="text-sm mt-2">Scroll for full story</p>
+            </div>
+          </div>
+        </div>
+        
         {/* Newspaper Sections */}
         {newspaperSections.map((section, index) => (
           <section 
