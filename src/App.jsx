@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Github, Linkedin } from 'lucide-react';
+import Profile from './assets/profile.jpg';
 
 function App() {
   const [activeSection, setActiveSection] = useState('about');
@@ -156,7 +157,7 @@ function App() {
                   {/* Profile Image with newspaper styling */}
                   <div className="border-4 border-stone-800 p-2 bg-stone-100 shadow-xl relative z-0">
                     <img 
-                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" 
+                      src={Profile} 
                       alt="Vance Andersen" 
                       className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-500 mix-blend-multiply"
                     />
