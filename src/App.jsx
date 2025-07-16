@@ -335,18 +335,27 @@ function App() {
 
                 {/* Quick stats/highlights in newspaper style */}
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 my-6 text-center">
-                  <div className="border border-stone-400 p-3 bg-stone-50">
+                  <button
+                    onClick={() => navigateToSection("experience")}
+                    className="border border-stone-400 p-3 bg-stone-50 hover:bg-stone-100 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
+                  >
                     <p className="font-bold text-2xl">4+</p>
                     <p className="text-sm">Years Experience</p>
-                  </div>
-                  <div className="border border-stone-400 p-3 bg-stone-50">
+                  </button>
+                  <button
+                    onClick={() => navigateToSection("projects")}
+                    className="border border-stone-400 p-3 bg-stone-50 hover:bg-stone-100 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
+                  >
                     <p className="font-bold text-2xl">15+</p>
                     <p className="text-sm">Projects Completed</p>
-                  </div>
-                  <div className="border border-stone-400 p-3 bg-stone-50 col-span-2 md:col-span-1">
-                    <p className="font-bold text-2xl">2</p>
-                    <p className="text-sm">Industry Awards</p>
-                  </div>
+                  </button>
+                  <button
+                    onClick={() => navigateToSection("skills")}
+                    className="border border-stone-400 p-3 bg-stone-50 hover:bg-stone-100 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer col-span-2 md:col-span-1"
+                  >
+                    <p className="font-bold text-2xl">5+</p>
+                    <p className="text-sm">Tech Stacks</p>
+                  </button>
                 </div>
 
                 <p className="text-xl italic mb-6">
@@ -485,7 +494,7 @@ function App() {
                                     return (
                                       <div
                                         key={i}
-                                        className="flex items-start gap-3 p-4 border border-stone-300 bg-stone-50 hover:bg-stone-100 transition-colors"
+                                        className="flex items-start gap-3 p-4 border border-stone-300 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer"
                                       >
                                         <div className="mt-1">
                                           <IconComponent size={20} />
@@ -559,7 +568,7 @@ function App() {
                                 {skillGroup.items.map((skill, j) => (
                                   <span
                                     key={j}
-                                    className="bg-stone-300 px-2 py-1 text-xs rounded"
+                                    className="bg-stone-300 hover:bg-stone-400 px-2 py-1 text-xs rounded transition-colors duration-300 shadow-sm hover:shadow-md cursor-default"
                                   >
                                     {skill}
                                   </span>
