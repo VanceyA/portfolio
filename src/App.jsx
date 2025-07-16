@@ -343,7 +343,7 @@ function App() {
                     <p className="text-sm">Years Experience</p>
                   </button>
                   <button
-                    onClick={() => navigateToSection("projects")}
+                    onClick={() => navigateToSection("skills")}
                     className="border border-stone-400 p-3 bg-stone-50 hover:bg-stone-100 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
                   >
                     <p className="font-bold text-2xl">15+</p>
@@ -381,10 +381,34 @@ function App() {
             </div>
 
             {/* Scroll indicator */}
-            <div className="mt-8 text-center animate-bounce">
-              <div className="w-8 h-8 mx-auto border-b-2 border-r-2 border-stone-800 transform rotate-45"></div>
-              <p className="text-sm mt-2">Scroll for full story</p>
+            <div
+              className="mt-6 text-center cursor-pointer"
+              onClick={() => navigateToSection("about")}
+              aria-label="Scroll to about section"
+            >
+              <div 
+                className="w-8 h-8 mx-auto border-b-2 border-r-2 border-stone-800"
+                style={{ animation: "bounce 3s infinite" }}
+              ></div>
+              <p className="text-sm mt-6">Scroll for full story</p>
             </div>
+
+            {/* Custom animation keyframes */}
+            <style>
+              {`
+                @keyframes bounce {
+                  0%, 20%, 50%, 80%, 100% {
+                    transform: translateY(0) rotate(45deg);
+                  }
+                  40% {
+                    transform: translateY(15px) rotate(45deg);
+                  }
+                  60% {
+                    transform: translateY(7px) rotate(45deg);
+                  }
+                }
+              `}
+            </style>
           </div>
         </div>
 
