@@ -18,31 +18,44 @@ import Profile from "./assets/profile.jpg";
 function App() {
   const [activeSection, setActiveSection] = useState("");
   const [showFullStory, setShowFullStory] = useState(false);
+  const [isManualNavigation, setIsManualNavigation] = useState(false);
 
   // Update active section based on scroll position
   useEffect(() => {
+    let isScrolling = false;
+
     const handleScroll = () => {
-      const sections = document.querySelectorAll("section");
-      let currentSection = "";
+      // Don't process scroll events too frequently or during manual navigation
+      if (isScrolling || isManualNavigation) return;
 
-      // If we're near the top of the page, don't highlight any section
-      if (window.scrollY < 100) {
-        setActiveSection("");
-        return;
-      }
+      isScrolling = true;
 
-      sections.forEach((section) => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (
-          window.scrollY >= sectionTop - 200 &&
-          window.scrollY < sectionTop + sectionHeight - 200
-        ) {
-          currentSection = section.getAttribute("id");
+      // Use setTimeout to add a small delay
+      setTimeout(() => {
+        const sections = document.querySelectorAll("section");
+        let currentSection = "";
+
+        // If we're near the top of the page, don't highlight any section
+        if (window.scrollY < 100) {
+          setActiveSection("");
+          isScrolling = false;
+          return;
         }
-      });
 
-      setActiveSection(currentSection);
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          if (
+            window.scrollY >= sectionTop - 200 &&
+            window.scrollY < sectionTop + sectionHeight - 200
+          ) {
+            currentSection = section.getAttribute("id");
+          }
+        });
+
+        setActiveSection(currentSection);
+        isScrolling = false;
+      }, 100); // Slightly longer delay to prevent flickering
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -51,7 +64,16 @@ function App() {
   }, []);
 
   const navigateToSection = (sectionId) => {
+    // Set manual navigation flag to prevent scroll handler from interfering
+    setIsManualNavigation(true);
+
+    // Scroll to the section
     document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+
+    // Reset the flag after animation completes
+    setTimeout(() => {
+      setIsManualNavigation(false);
+    }, 800);
   };
 
   const newspaperSections = [
@@ -216,8 +238,15 @@ function App() {
             <div className="flex items-baseline">
               <button
                 onClick={() => {
+                  // Set manual navigation flag to prevent scroll handler from interfering
+                  setIsManualNavigation(true);
+
                   window.scrollTo({ top: 0, behavior: "smooth" });
-                  setActiveSection("");
+
+                  // Reset the flag after animation completes
+                  setTimeout(() => {
+                    setIsManualNavigation(false);
+                  }, 800);
                 }}
                 className="flex items-baseline hover:opacity-80 cursor-pointer"
                 aria-label="Return to top"
