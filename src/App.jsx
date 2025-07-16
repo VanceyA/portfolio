@@ -16,14 +16,20 @@ import {
 import Profile from "./assets/profile.jpg";
 
 function App() {
-  const [activeSection, setActiveSection] = useState("about");
+  const [activeSection, setActiveSection] = useState("");
   const [showFullStory, setShowFullStory] = useState(false);
 
   // Update active section based on scroll position
   useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll("section");
-      let currentSection = "about";
+      let currentSection = "";
+
+      // If we're near the top of the page, don't highlight any section
+      if (window.scrollY < 100) {
+        setActiveSection("");
+        return;
+      }
 
       sections.forEach((section) => {
         const sectionTop = section.offsetTop;
@@ -45,7 +51,6 @@ function App() {
   }, []);
 
   const navigateToSection = (sectionId) => {
-    setActiveSection(sectionId);
     document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -173,29 +178,31 @@ function App() {
 
   const skills = [
     {
-      category: "Technical",
-      items: [
-        "Software Engineering",
-        "Application Development",
-        "System Architecture",
-        "Problem Solving",
-      ],
-    },
-    {
       category: "Languages",
-      items: ["JavaScript", "Python", "HTML/CSS", "SQL", "Java"],
+      items: ["Go", "JavaScript", "TypeScript", "Python", "C++", "HTML", "CSS"],
     },
     {
       category: "Frameworks",
-      items: ["React", "Node.js", "Express", "Next.js", "Django"],
+      items: ["Gin", "Node.js", "Vue", "React", "Next.js", "Nuxt"],
+    },
+    {
+      category: "Infrastructure & Tools",
+      items: [
+        "Microservices",
+        "Docker",
+        "GitHub",
+        "PostgreSQL",
+        "MongoDB",
+        "AWS",
+      ],
     },
     {
       category: "Communication",
       items: [
-        "Technical Writing",
-        "Documentation",
-        "User Training",
-        "Client Presentations",
+        "Technical Documentation",
+        "Team Mentorship",
+        "Cross-functional Collaboration",
+        "Technical Instruction",
       ],
     },
   ];
@@ -207,8 +214,17 @@ function App() {
         <div className="container mx-auto px-4 py-3">
           <div className="flex justify-between items-center">
             <div className="flex items-baseline">
-              <h1 className="text-2xl font-bold mr-4">THE PORTFOLIO TIMES</h1>
-              <p className="text-sm italic">Vol. 1 Issue 4</p>
+              <button
+                onClick={() => {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  setActiveSection("");
+                }}
+                className="flex items-baseline hover:opacity-80 cursor-pointer"
+                aria-label="Return to top"
+              >
+                <h1 className="text-2xl font-bold mr-4">THE PORTFOLIO TIMES</h1>
+                <p className="text-sm italic">Vol. 1 Issue 4</p>
+              </button>
             </div>
             <nav>
               <ul className="flex space-x-6">
@@ -216,7 +232,7 @@ function App() {
                   <li key={section.id}>
                     <button
                       onClick={() => navigateToSection(section.id)}
-                      className={`py-1 px-2 ${
+                      className={`py-1 px-2 cursor-pointer ${
                         activeSection === section.id
                           ? "bg-stone-800 text-stone-100"
                           : "text-stone-800 hover:bg-stone-200"
