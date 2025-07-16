@@ -142,32 +142,32 @@ function App() {
 
   const experiences = [
     {
-      year: "2024-25",
-      title: "Startup Development",
-      subtitle: "Balancing Technical Excellence with User Needs",
+      year: "2024-Present",
+      title: "Software Engineer",
+      subtitle: "Tdooz, Hybrid",
       description:
-        "Developed applications under CEO/CTO supervision while maintaining focus on user experience and technical feasibility.",
+        "Develop full-stack features across React, React Native, Go backend, and AWS infrastructure, implementing changes spanning 4+ applications. Provide technical support and mentorship to 5-engineer team on cross-stack debugging, architecture decisions, and unfamiliar technologies. Maintain CI/CD pipeline and development tooling while designing end-to-end platform features for microservices architecture.",
     },
     {
-      year: "2023-25",
-      title: "Computer Science Education",
-      subtitle: "Making Complex Concepts Clear",
+      year: "2023-Present",
+      title: "Computer Science Educator",
+      subtitle: "Various Organizations",
       description:
-        "Taught programming concepts to diverse learners, developing methods to explain difficult technical subjects in accessible ways.",
+        "Delivered engaging computer science instruction at multiple institutions including iD Tech Camps, Utah Tech University, and elementary school code clubs. Adapted curriculum to diverse student needs from K-12 to university level. Created custom learning materials to make complex programming concepts accessible to beginners. Mentored students through hands-on coding projects to build practical skills.",
     },
     {
-      year: "2023-24",
-      title: "Low-Code/No-Code Collaboration",
-      subtitle: "Bridging Development Teams",
+      year: "2023-2024",
+      title: "Software Developer",
+      subtitle: "State of Utah, Remote",
       description:
-        "Brought custom code solutions to bridge gaps in low-code/no-code implementations, facilitating seamless team collaboration.",
+        "Developed custom web-based solutions using Power Platform and automated business workflows. Provided technical guidance to development teams throughout the software development lifecycle.",
     },
     {
-      year: "2021-23",
-      title: "Field Support IT",
-      subtitle: "Understanding Real User Pain Points",
+      year: "2021-2023",
+      title: "Secondary Tech Support",
+      subtitle: "Washington County School District, St. George, UT",
       description:
-        "Diagnosed and solved technical issues while maintaining clear communication with end users, translating complex technical problems into understandable solutions.",
+        "Provided hardware, network, and software support for over 2,000 devices including desktops, laptops, and Chromebooks.",
     },
   ];
 
@@ -484,7 +484,16 @@ function App() {
                               <h6 className="text-sm font-semibold mb-1">
                                 {exp.subtitle}
                               </h6>
-                              <p className="text-sm">{exp.description}</p>
+                              <ul className="text-sm list-disc pl-5 space-y-1 mt-2">
+                                {exp.description
+                                  .split(". ")
+                                  .filter((item) => item.trim().length > 0)
+                                  .map((item, index) => (
+                                    <li key={index}>
+                                      {item.endsWith(".") ? item : `${item}.`}
+                                    </li>
+                                  ))}
+                              </ul>
                             </div>
                           ))}
                         </div>
