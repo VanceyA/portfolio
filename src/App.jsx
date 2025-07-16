@@ -568,7 +568,7 @@ function App() {
                                 {skillGroup.items.map((skill, j) => (
                                   <span
                                     key={j}
-                                    className="bg-stone-300 hover:bg-stone-400 px-2 py-1 text-xs rounded transition-colors duration-300 shadow-sm hover:shadow-md cursor-default"
+                                    className="bg-stone-300 hover:bg-stone-200 px-2 py-1 text-xs rounded transition-colors duration-300 shadow-sm hover:shadow-md cursor-default"
                                   >
                                     {skill}
                                   </span>
