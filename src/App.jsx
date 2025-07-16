@@ -81,12 +81,6 @@ function App() {
       ],
       keyValues: [
         {
-          icon: "Code",
-          title: "Technical Excellence",
-          description:
-            "Writing clean, maintainable code that solves real problems",
-        },
-        {
           icon: "Compass",
           title: "User-Focused",
           description:
@@ -96,6 +90,12 @@ function App() {
           icon: "Lightbulb",
           title: "Creative Solutions",
           description: "Finding innovative approaches to technical challenges",
+        },
+        {
+          icon: "Code",
+          title: "Technical Excellence",
+          description:
+            "Writing clean, maintainable code that solves real problems",
         },
       ],
       image:
@@ -312,13 +312,13 @@ function App() {
                 <div className="flex flex-wrap justify-center md:justify-start gap-4">
                   <button
                     onClick={() => navigateToSection("about")}
-                    className="bg-stone-800 text-stone-100 px-8 py-3 hover:bg-stone-700 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg"
+                    className="bg-stone-800 text-stone-100 px-8 py-3 hover:bg-stone-700 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
                   >
                     Read My Story
                   </button>
                   <button
                     onClick={() => navigateToSection("contact")}
-                    className="border-2 border-stone-800 px-8 py-3 hover:bg-stone-200 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg"
+                    className="border-2 border-stone-800 px-8 py-3 hover:bg-stone-200 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
                   >
                     Contact Now
                   </button>
