@@ -12,6 +12,8 @@ import {
   Lightbulb,
   Target,
   Zap,
+  Menu,
+  X,
 } from "lucide-react";
 import Profile from "./assets/profile.jpg";
 
@@ -19,6 +21,7 @@ function App() {
   const [activeSection, setActiveSection] = useState("");
   const [showFullStory, setShowFullStory] = useState(false);
   const [isManualNavigation, setIsManualNavigation] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Update active section based on scroll position
   useEffect(() => {
@@ -67,6 +70,9 @@ function App() {
     // Set manual navigation flag to prevent scroll handler from interfering
     setIsManualNavigation(true);
 
+    // Close mobile menu if open
+    setIsMobileMenuOpen(false);
+
     // Scroll to the section
     document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
 
@@ -74,6 +80,10 @@ function App() {
     setTimeout(() => {
       setIsManualNavigation(false);
     }, 800);
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   const newspaperSections = [
@@ -240,6 +250,7 @@ function App() {
                 onClick={() => {
                   // Set manual navigation flag to prevent scroll handler from interfering
                   setIsManualNavigation(true);
+                  setIsMobileMenuOpen(false);
 
                   window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -251,17 +262,23 @@ function App() {
                 className="flex items-baseline hover:opacity-80 cursor-pointer"
                 aria-label="Return to top"
               >
-                <h1 className="text-2xl font-bold mr-4">THE PORTFOLIO TIMES</h1>
-                <p className="text-sm italic">Vol. 1 Issue 4</p>
+                <h1 className="text-lg sm:text-xl md:text-2xl font-bold mr-2 sm:mr-4">
+                  THE PORTFOLIO TIMES
+                </h1>
+                <p className="text-xs sm:text-sm italic hidden sm:block">
+                  Vol. 1 Issue 4
+                </p>
               </button>
             </div>
-            <nav>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:block">
               <ul className="flex space-x-6">
                 {newspaperSections.map((section) => (
                   <li key={section.id}>
                     <button
                       onClick={() => navigateToSection(section.id)}
-                      className={`py-1 px-2 cursor-pointer ${
+                      className={`py-1 px-2 cursor-pointer transition-colors ${
                         activeSection === section.id
                           ? "bg-stone-800 text-stone-100"
                           : "text-stone-800 hover:bg-stone-200"
@@ -273,18 +290,52 @@ function App() {
                 ))}
               </ul>
             </nav>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={toggleMobileMenu}
+              className="md:hidden p-2 text-stone-800 hover:bg-stone-200 transition-colors"
+              aria-label="Toggle mobile menu"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
+
+          {/* Mobile Navigation Menu */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden mt-4 pb-4 border-t border-stone-300">
+              <nav className="pt-4">
+                <ul className="space-y-2">
+                  {newspaperSections.map((section) => (
+                    <li key={section.id}>
+                      <button
+                        onClick={() => navigateToSection(section.id)}
+                        className={`w-full text-left py-3 px-4 cursor-pointer transition-colors ${
+                          activeSection === section.id
+                            ? "bg-stone-800 text-stone-100"
+                            : "text-stone-800 hover:bg-stone-200"
+                        }`}
+                      >
+                        {section.id.charAt(0).toUpperCase() +
+                          section.id.slice(1)}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </div>
+          )}
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 pt-24 pb-12">
+      <main className="container mx-auto px-4 pt-20 sm:pt-24 pb-12">
         {/* Hero Banner */}
-        <div className="py-8 mb-2 border-y-4 border-double border-stone-800 relative overflow-hidden">
+        <div className="py-4 sm:py-8 mb-2 border-y-4 border-double border-stone-800 relative overflow-hidden">
           {/* Breaking news banner */}
-          <div className="bg-stone-800 text-stone-100 py-2 mb-8 shadow-lg">
+          <div className="bg-stone-800 text-stone-100 py-2 mb-4 sm:mb-8 shadow-lg">
             <div className="container mx-auto px-4">
-              <p className="text-sm font-bold tracking-wider text-center">
+              <p className="text-xs sm:text-sm font-bold tracking-wider text-center">
                 BREAKING NEWS -{" "}
                 {new Date().toLocaleDateString("en-US", {
                   month: "long",
@@ -296,9 +347,9 @@ function App() {
           </div>
 
           <div className="container mx-auto px-4 relative z-10">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-8">
               {/* Profile Photo Column */}
-              <div className="md:w-1/3">
+              <div className="w-full sm:w-2/3 md:w-1/3 mb-4 md:mb-0">
                 <div className="relative">
                   {/* Decorative newspaper corner fold */}
 
@@ -309,8 +360,10 @@ function App() {
                       alt="Vance Andersen"
                       className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-500 mix-blend-multiply"
                     />
-                    <div className="absolute bottom-4 left-0 right-0 bg-stone-800 bg-opacity-80 text-stone-100 p-2 text-center">
-                      <p className="font-bold">Vance Andersen</p>
+                    <div className="absolute bottom-2 sm:bottom-4 left-0 right-0 bg-stone-800 bg-opacity-80 text-stone-100 p-1 sm:p-2 text-center">
+                      <p className="font-bold text-sm sm:text-base">
+                        Vance Andersen
+                      </p>
                       <p className="text-xs">
                         Software Engineer & Communicator
                       </p>
@@ -326,53 +379,53 @@ function App() {
 
               {/* Headline Column */}
               <div className="md:w-2/3 text-center md:text-left">
-                <h2 className="text-6xl md:text-7xl font-bold mb-2 tracking-tight font-serif">
+                <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-2 tracking-tight font-serif leading-tight">
                   VANCE ANDERSEN
                 </h2>
-                <h3 className="text-2xl md:text-3xl font-bold mb-4 tracking-tight">
+                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-4 tracking-tight leading-tight">
                   TECH INNOVATOR BRIDGES TECH AND REAL PEOPLE
                 </h3>
 
                 {/* Quick stats/highlights in newspaper style */}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 my-6 text-center">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 my-4 sm:my-6 text-center">
                   <button
                     onClick={() => navigateToSection("experience")}
-                    className="border border-stone-400 p-3 bg-stone-50 hover:bg-stone-100 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
+                    className="border border-stone-400 p-3 sm:p-4 bg-stone-50 hover:bg-stone-100 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer touch-manipulation"
                   >
-                    <p className="font-bold text-2xl">4+</p>
-                    <p className="text-sm">Years Experience</p>
+                    <p className="font-bold text-xl sm:text-2xl">4+</p>
+                    <p className="text-xs sm:text-sm">Years Experience</p>
                   </button>
                   <button
                     onClick={() => navigateToSection("skills")}
-                    className="border border-stone-400 p-3 bg-stone-50 hover:bg-stone-100 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
+                    className="border border-stone-400 p-3 sm:p-4 bg-stone-50 hover:bg-stone-100 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer touch-manipulation"
                   >
-                    <p className="font-bold text-2xl">15+</p>
-                    <p className="text-sm">Projects Completed</p>
+                    <p className="font-bold text-xl sm:text-2xl">15+</p>
+                    <p className="text-xs sm:text-sm">Projects Completed</p>
                   </button>
                   <button
                     onClick={() => navigateToSection("skills")}
-                    className="border border-stone-400 p-3 bg-stone-50 hover:bg-stone-100 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer col-span-2 md:col-span-1"
+                    className="border border-stone-400 p-3 sm:p-4 bg-stone-50 hover:bg-stone-100 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer touch-manipulation sm:col-span-2 md:col-span-1"
                   >
-                    <p className="font-bold text-2xl">5+</p>
-                    <p className="text-sm">Tech Stacks</p>
+                    <p className="font-bold text-xl sm:text-2xl">5+</p>
+                    <p className="text-xs sm:text-sm">Tech Stacks</p>
                   </button>
                 </div>
 
-                <p className="text-xl italic mb-6">
+                <p className="text-base sm:text-lg md:text-xl italic mb-4 sm:mb-6 px-2 md:px-0">
                   "One of the most innovative approaches to personal branding
                   I've seen" — Industry Expert
                 </p>
 
-                <div className="flex flex-wrap justify-center md:justify-start gap-4">
+                <div className="flex flex-col sm:flex-row flex-wrap justify-center md:justify-start gap-3 sm:gap-4">
                   <button
                     onClick={() => navigateToSection("about")}
-                    className="bg-stone-800 text-stone-100 px-8 py-3 hover:bg-stone-700 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
+                    className="bg-stone-800 text-stone-100 px-6 sm:px-8 py-3 hover:bg-stone-700 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer touch-manipulation text-sm sm:text-base"
                   >
                     Read My Story
                   </button>
                   <button
                     onClick={() => navigateToSection("contact")}
-                    className="border-2 border-stone-800 px-8 py-3 hover:bg-stone-200 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
+                    className="border-2 border-stone-800 px-6 sm:px-8 py-3 hover:bg-stone-200 transition-colors duration-300 shadow-md transform hover:-translate-y-1 hover:shadow-lg cursor-pointer touch-manipulation text-sm sm:text-base"
                   >
                     Contact Now
                   </button>
@@ -386,7 +439,7 @@ function App() {
               onClick={() => navigateToSection("about")}
               aria-label="Scroll to about section"
             >
-              <div 
+              <div
                 className="w-8 h-8 mx-auto border-b-2 border-r-2 border-stone-800"
                 style={{ animation: "bounce 3s infinite" }}
               ></div>
@@ -417,18 +470,22 @@ function App() {
           <section
             key={section.id}
             id={section.id}
-            className={`min-h-screen py-10 ${
+            className={`min-h-screen py-6 sm:py-10 px-4 ${
               index % 2 === 0 ? "bg-stone-100" : "bg-stone-200"
             }`}
           >
             <div className="max-w-6xl mx-auto">
               {/* Section Header */}
-              <div className="mb-8 border-b-2 border-stone-800 pb-2">
-                <p className="text-sm uppercase tracking-wider">
+              <div className="mb-6 sm:mb-8 border-b-2 border-stone-800 pb-2">
+                <p className="text-xs sm:text-sm uppercase tracking-wider">
                   {section.date}
                 </p>
-                <h2 className="text-4xl font-bold mb-2">{section.title}</h2>
-                <h3 className="text-2xl italic">{section.headline}</h3>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 leading-tight">
+                  {section.title}
+                </h2>
+                <h3 className="text-lg sm:text-xl md:text-2xl italic leading-tight">
+                  {section.headline}
+                </h3>
               </div>
 
               {/* Section Content */}
@@ -437,12 +494,12 @@ function App() {
                   section.imagePosition === "right"
                     ? "md:flex-row"
                     : "md:flex-row-reverse"
-                } gap-8`}
+                } gap-4 sm:gap-8`}
               >
                 {/* Text Content */}
                 <div
                   className={`flex-1 ${
-                    section.imagePosition === "right" ? "pr-4" : "pl-4"
+                    section.imagePosition === "right" ? "md:pr-4" : "md:pl-4"
                   }`}
                 >
                   <div className="relative">
@@ -451,42 +508,47 @@ function App() {
                       {section.id === "about" ? (
                         <div className="about-section">
                           {/* Introduction */}
-                          <div className="mb-8">
-                            <p className="mb-4 first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2">
+                          <div className="mb-6 sm:mb-8">
+                            <p className="mb-4 text-sm sm:text-base first-letter:text-3xl sm:first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2">
                               {section.content}
                             </p>
                           </div>
 
                           {/* Two-column layout for the rest of the content */}
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 relative">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-4 sm:gap-y-6 relative">
                             {/* Paper fold line between columns (only visible on md screens and up) */}
                             <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-stone-300"></div>
                             {/* Column 1: Full story */}
                             <div>
-                              <div className="border-l-4 border-stone-800 pl-4 mb-6">
-                                <h4 className="text-xl font-bold mb-4 border-b border-stone-400">
+                              <div className="border-l-4 border-stone-800 pl-3 sm:pl-4 mb-4 sm:mb-6">
+                                <h4 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 border-b border-stone-400">
                                   My Story
                                 </h4>
                                 {showFullStory ? (
                                   <>
                                     {section.fullStory.map((paragraph, i) => (
-                                      <p key={i} className="mb-4">
+                                      <p
+                                        key={i}
+                                        className="mb-3 sm:mb-4 text-sm sm:text-base"
+                                      >
                                         {paragraph}
                                       </p>
                                     ))}
                                     <button
                                       onClick={() => setShowFullStory(false)}
-                                      className="text-sm font-bold hover:text-stone-600 flex items-center gap-1 mt-2"
+                                      className="text-xs sm:text-sm font-bold hover:text-stone-600 flex items-center gap-1 mt-2 touch-manipulation"
                                     >
                                       <span>Read Less</span>
                                     </button>
                                   </>
                                 ) : (
                                   <>
-                                    <p>{section.fullStory[0]}</p>
+                                    <p className="text-sm sm:text-base">
+                                      {section.fullStory[0]}
+                                    </p>
                                     <button
                                       onClick={() => setShowFullStory(true)}
-                                      className="mt-4 text-sm font-bold hover:text-stone-600 flex items-center gap-1"
+                                      className="mt-3 sm:mt-4 text-xs sm:text-sm font-bold hover:text-stone-600 flex items-center gap-1 touch-manipulation"
                                     >
                                       <span>Continue Reading</span>
                                     </button>
@@ -497,11 +559,11 @@ function App() {
 
                             {/* Column 2: Key values with icons */}
                             <div>
-                              <div className="mb-6">
-                                <h4 className="text-xl font-bold mb-4 border-b border-stone-400">
+                              <div className="mb-4 sm:mb-6">
+                                <h4 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 border-b border-stone-400">
                                   Core Values & Approach
                                 </h4>
-                                <div className="grid grid-cols-1 gap-4">
+                                <div className="grid grid-cols-1 gap-3 sm:gap-4">
                                   {section.keyValues.map((value, i) => {
                                     const IconComponent = {
                                       Award: Award,
@@ -518,16 +580,19 @@ function App() {
                                     return (
                                       <div
                                         key={i}
-                                        className="flex items-start gap-3 p-4 border border-stone-300 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer"
+                                        className="flex items-start gap-2 sm:gap-3 p-3 sm:p-4 border border-stone-300 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer touch-manipulation"
                                       >
-                                        <div className="mt-1">
-                                          <IconComponent size={20} />
+                                        <div className="mt-1 flex-shrink-0">
+                                          <IconComponent
+                                            size={18}
+                                            className="sm:w-5 sm:h-5"
+                                          />
                                         </div>
                                         <div>
-                                          <h5 className="font-bold">
+                                          <h5 className="font-bold text-sm sm:text-base">
                                             {value.title}
                                           </h5>
-                                          <p className="text-sm mt-1">
+                                          <p className="text-xs sm:text-sm mt-1">
                                             {value.description}
                                           </p>
                                         </div>
@@ -540,7 +605,7 @@ function App() {
                           </div>
                         </div>
                       ) : (
-                        <p className="mb-4 first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2">
+                        <p className="mb-4 text-sm sm:text-base first-letter:text-3xl sm:first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2">
                           {section.content}
                         </p>
                       )}
@@ -548,21 +613,23 @@ function App() {
                       {/* Experience Section */}
                       {section.showExperience && (
                         <div className="break-inside-avoid">
-                          <h4 className="text-xl font-bold mt-6 mb-4 border-b border-stone-400">
+                          <h4 className="text-lg sm:text-xl font-bold mt-4 sm:mt-6 mb-3 sm:mb-4 border-b border-stone-400">
                             Career Highlights
                           </h4>
                           {experiences.map((exp, i) => (
-                            <div key={i} className="mb-6">
-                              <div className="flex justify-between items-baseline mb-1">
-                                <h5 className="font-bold">{exp.title}</h5>
-                                <span className="text-sm italic">
+                            <div key={i} className="mb-4 sm:mb-6">
+                              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+                                <h5 className="font-bold text-sm sm:text-base">
+                                  {exp.title}
+                                </h5>
+                                <span className="text-xs sm:text-sm italic text-stone-600">
                                   {exp.year}
                                 </span>
                               </div>
-                              <h6 className="text-sm font-semibold mb-1">
+                              <h6 className="text-xs sm:text-sm font-semibold mb-1 text-stone-700">
                                 {exp.subtitle}
                               </h6>
-                              <ul className="text-sm list-disc pl-5 space-y-1 mt-2">
+                              <ul className="text-xs sm:text-sm list-disc pl-4 sm:pl-5 space-y-1 mt-2">
                                 {exp.description
                                   .split(". ")
                                   .filter((item) => item.trim().length > 0)
@@ -580,19 +647,19 @@ function App() {
                       {/* Skills Section */}
                       {section.showSkills && (
                         <div className="break-inside-avoid">
-                          <h4 className="text-xl font-bold mt-6 mb-4 border-b border-stone-400">
+                          <h4 className="text-lg sm:text-xl font-bold mt-4 sm:mt-6 mb-3 sm:mb-4 border-b border-stone-400">
                             Expertise
                           </h4>
                           {skills.map((skillGroup, i) => (
-                            <div key={i} className="mb-6">
-                              <h5 className="font-bold mb-2">
+                            <div key={i} className="mb-4 sm:mb-6">
+                              <h5 className="font-bold mb-2 text-sm sm:text-base">
                                 {skillGroup.category}
                               </h5>
-                              <div className="flex flex-wrap gap-2">
+                              <div className="flex flex-wrap gap-1 sm:gap-2">
                                 {skillGroup.items.map((skill, j) => (
                                   <span
                                     key={j}
-                                    className="bg-stone-300 hover:bg-stone-200 px-2 py-1 text-xs rounded transition-colors duration-300 shadow-sm hover:shadow-md cursor-default"
+                                    className="bg-stone-300 hover:bg-stone-200 px-2 py-1 text-xs sm:text-sm rounded transition-colors duration-300 shadow-sm hover:shadow-md cursor-default touch-manipulation"
                                   >
                                     {skill}
                                   </span>
@@ -606,34 +673,40 @@ function App() {
                       {/* Contact Section */}
                       {section.showContact && (
                         <div className="break-inside-avoid">
-                          <h4 className="text-xl font-bold mt-6 mb-4 border-b border-stone-400">
+                          <h4 className="text-lg sm:text-xl font-bold mt-4 sm:mt-6 mb-3 sm:mb-4 border-b border-stone-400">
                             Contact Information
                           </h4>
-                          <div className="space-y-3">
+                          <div className="space-y-3 sm:space-y-4">
                             <a
                               href="mailto:vancevance2003@gmail.com"
-                              className="flex items-center gap-2 hover:text-stone-600"
+                              className="flex items-center gap-2 sm:gap-3 hover:text-stone-600 transition-colors p-2 sm:p-3 -m-2 sm:-m-3 rounded touch-manipulation"
                             >
-                              <Mail size={16} />
-                              <span>vancevance2003@gmail.com</span>
+                              <Mail size={16} className="flex-shrink-0" />
+                              <span className="text-sm sm:text-base break-all">
+                                vancevance2003@gmail.com
+                              </span>
                             </a>
                             <a
                               href="https://github.com/vanceya"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2 hover:text-stone-600"
+                              className="flex items-center gap-2 sm:gap-3 hover:text-stone-600 transition-colors p-2 sm:p-3 -m-2 sm:-m-3 rounded touch-manipulation"
                             >
-                              <Github size={16} />
-                              <span>github.com/vanceya</span>
+                              <Github size={16} className="flex-shrink-0" />
+                              <span className="text-sm sm:text-base">
+                                github.com/vanceya
+                              </span>
                             </a>
                             <a
                               href="https://linkedin.com/in/vance-andersen"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2 hover:text-stone-600"
+                              className="flex items-center gap-2 sm:gap-3 hover:text-stone-600 transition-colors p-2 sm:p-3 -m-2 sm:-m-3 rounded touch-manipulation"
                             >
-                              <Linkedin size={16} />
-                              <span>linkedin.com/in/vance-andersen</span>
+                              <Linkedin size={16} className="flex-shrink-0" />
+                              <span className="text-sm sm:text-base">
+                                linkedin.com/in/vance-andersen
+                              </span>
                             </a>
                           </div>
                         </div>
