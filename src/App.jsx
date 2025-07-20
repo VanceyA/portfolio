@@ -22,7 +22,13 @@ function App() {
   const [showFullStory, setShowFullStory] = useState(false);
   const [isManualNavigation, setIsManualNavigation] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isImageColorful, setIsImageColorful] = useState(false);
+  const [imageStates, setImageStates] = useState({
+    profile: false,
+    about: false,
+    experience: false,
+    skills: false,
+    contact: false,
+  });
 
   // Update active section based on scroll position
   useEffect(() => {
@@ -87,8 +93,11 @@ function App() {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const toggleImageSaturation = () => {
-    setIsImageColorful(!isImageColorful);
+  const toggleImageSaturation = (imageId) => {
+    setImageStates(prev => ({
+      ...prev,
+      [imageId]: !prev[imageId]
+    }));
   };
 
   const newspaperSections = [
@@ -363,9 +372,9 @@ function App() {
                     <img
                       src={Profile}
                       alt="Vance Andersen"
-                      onClick={toggleImageSaturation}
+                      onClick={() => toggleImageSaturation('profile')}
                       className={`w-full h-auto transition-all duration-500 mix-blend-multiply cursor-pointer ${
-                        isImageColorful ? "grayscale-0" : "grayscale hover:grayscale-0"
+                        imageStates.profile ? "grayscale-0" : "grayscale hover:grayscale-0"
                       }`}
                       title="Click to toggle color"
                     />
@@ -729,7 +738,11 @@ function App() {
                   <img
                     src={section.image}
                     alt={section.title}
-                    className="w-full h-auto object-cover grayscale mix-blend-multiply border border-stone-400 shadow-md"
+                    onClick={() => toggleImageSaturation(section.id)}
+                    className={`w-full h-auto object-cover transition-all duration-500 mix-blend-multiply border border-stone-400 shadow-md cursor-pointer ${
+                      imageStates[section.id] ? "grayscale-0" : "grayscale hover:grayscale-0"
+                    }`}
+                    title="Click to toggle color"
                   />
                   <p className="text-xs mt-2 italic text-stone-600">
                     Photo: The Portfolio Times / Staff
