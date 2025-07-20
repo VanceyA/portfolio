@@ -22,6 +22,7 @@ function App() {
   const [showFullStory, setShowFullStory] = useState(false);
   const [isManualNavigation, setIsManualNavigation] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isImageColorful, setIsImageColorful] = useState(false);
 
   // Update active section based on scroll position
   useEffect(() => {
@@ -84,6 +85,10 @@ function App() {
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const toggleImageSaturation = () => {
+    setIsImageColorful(!isImageColorful);
   };
 
   const newspaperSections = [
@@ -358,7 +363,11 @@ function App() {
                     <img
                       src={Profile}
                       alt="Vance Andersen"
-                      className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-500 mix-blend-multiply"
+                      onClick={toggleImageSaturation}
+                      className={`w-full h-auto transition-all duration-500 mix-blend-multiply cursor-pointer ${
+                        isImageColorful ? "grayscale-0" : "grayscale hover:grayscale-0"
+                      }`}
+                      title="Click to toggle color"
                     />
                     <div className="absolute bottom-2 sm:bottom-4 left-0 right-0 bg-stone-800 bg-opacity-80 text-stone-100 p-1 sm:p-2 text-center">
                       <p className="font-bold text-sm sm:text-base">
