@@ -373,10 +373,16 @@ function App() {
                       src={Profile}
                       alt="Vance Andersen"
                       onClick={() => toggleImageSaturation('profile')}
-                      className={`w-full h-auto transition-all duration-500 mix-blend-multiply cursor-pointer ${
+                      className={`w-full h-auto transition-all duration-500 mix-blend-multiply cursor-pointer select-none ${
                         imageStates.profile ? "grayscale-0" : "grayscale hover:grayscale-0"
                       }`}
                       title="Click to toggle color"
+                      style={{
+                        WebkitTapHighlightColor: 'transparent',
+                        WebkitTouchCallout: 'none',
+                        WebkitUserSelect: 'none',
+                        userSelect: 'none'
+                      }}
                     />
                     <div className="absolute bottom-2 sm:bottom-4 left-0 right-0 bg-stone-800 bg-opacity-80 text-stone-100 p-1 sm:p-2 text-center">
                       <p className="font-bold text-sm sm:text-base">
@@ -739,10 +745,16 @@ function App() {
                     src={section.image}
                     alt={section.title}
                     onClick={() => toggleImageSaturation(section.id)}
-                    className={`w-full h-auto object-cover transition-all duration-500 mix-blend-multiply border border-stone-400 shadow-md cursor-pointer ${
+                    className={`w-full h-auto object-cover transition-all duration-500 mix-blend-multiply border border-stone-400 shadow-md cursor-pointer select-none ${
                       imageStates[section.id] ? "grayscale-0" : "grayscale hover:grayscale-0"
                     }`}
                     title="Click to toggle color"
+                    style={{
+                      WebkitTapHighlightColor: 'transparent',
+                      WebkitTouchCallout: 'none',
+                      WebkitUserSelect: 'none',
+                      userSelect: 'none'
+                    }}
                   />
                   <p className="text-xs mt-2 italic text-stone-600">
                     Photo: The Portfolio Times / Staff
